@@ -27,22 +27,28 @@ public class B_CountSort {
     }
 
     int[] countSort(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
+        // подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //размер массива
         int n = scanner.nextInt();
         int[] points = new int[n];
 
-        //читаем точки
         for (int i = 0; i < n; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением сортировки подсчетом
+        int MAX_VALUE = 10;
+        int[] count = new int[MAX_VALUE + 1];
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
+        int index = 0;
+        for (int value = 0; value <= MAX_VALUE; value++) {
+            while (count[value] > 0) {
+                points[index] = value;
+                index++;
+                count[value]--;
+            }
+        }
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
     }
-
 }

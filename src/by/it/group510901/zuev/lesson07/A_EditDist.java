@@ -36,16 +36,26 @@ import java.util.Scanner;
 
 */
 
+
+
 public class A_EditDist {
 
 
     int getDistanceEdinting(String one, String two) {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        return editDistRecursive(one, two, one.length(), two.length());
+    }
 
+    private int editDistRecursive(String one, String two, int i, int j) {
+        if (i == 0) return j;
+        if (j == 0) return i;
+        if (one.charAt(i - 1) == two.charAt(j - 1)) {
+            return editDistRecursive(one, two, i - 1, j - 1);
+        }
+        int insert = editDistRecursive(one, two, i, j - 1) + 1;
+        int delete = editDistRecursive(one, two, i - 1, j) + 1;
+        int replace = editDistRecursive(one, two, i - 1, j - 1) + 1;
 
-        int result = 0;
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return Math.min(insert, Math.min(delete, replace));
     }
 
 

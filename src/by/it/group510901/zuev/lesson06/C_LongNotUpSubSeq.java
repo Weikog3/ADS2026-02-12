@@ -1,6 +1,7 @@
 package by.it.group510901.zuev.lesson06;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -45,22 +46,56 @@ public class C_LongNotUpSubSeq {
     }
 
     int getNotUpSeqSize(InputStream stream) throws FileNotFoundException {
-        //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        //общая длина последовательности
+
         int n = scanner.nextInt();
-        int[] m = new int[n];
-        //читаем всю последовательность
+        int[] a = new int[n];
         for (int i = 0; i < n; i++) {
-            m[i] = scanner.nextInt();
+            a[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи методами динамического программирования (!!!)
-        int result = 0;
+        int[] tail = new int[n];
+        int[] prevIndex = new int[n];
+        Arrays.fill(prevIndex, -1);
+        int[] posInTail = new int[n];
 
+        int length = 0;
 
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        for (int i = 0; i < n; i++) {
+            int x = a[i];
+            int left = 0;
+            int right = length;
+
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (tail[mid] < x) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            int pos = left;
+            if (pos > 0) {
+                prevIndex[i] = posInTail[pos - 1];
+            }
+            tail[pos] = x;
+            posInTail[pos] = i;
+            if (pos == length) {
+                length++;
+            }
+        }
+        int[] resultIndices = new int[length];
+        int currentPos = posInTail[length - 1];
+        for (int i = length - 1; i >= 0; i--) {
+            resultIndices[i] = currentPos + 1;
+            currentPos = prevIndex[currentPos];
+        }
+        System.out.println(length);
+        for (int idx : resultIndices) {
+            System.out.print(idx + " ");
+        }
+        System.out.println();
+
+        return length;
     }
 
 }
